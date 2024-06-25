@@ -34,6 +34,11 @@ const newInvoice = async () => {
     router.push('/invoice/new')
 }
 
+const newCustomer = async () => {
+    // let form = await axios.get("/api/add_new_customer")
+    // console.log('form', form.data)
+    router.push('/invoices/add_new_customer.vue')
+}
 const onShow = (id) => {
     router.push('/invoice/show/' + id)
 }
@@ -49,6 +54,11 @@ const onShow = (id) => {
             <div>
                 <a class="btn btn-secondary" @click="newInvoice">
                     New Invoice
+                </a>
+            </div>
+            <div>
+                <a class="btn btn-secondary" @click="newCustomer">
+                    Add Customer
                 </a>
             </div>
         </div>

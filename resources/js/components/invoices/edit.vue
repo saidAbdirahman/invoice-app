@@ -76,6 +76,55 @@ const addCart = (item) => {
     
 }
 
+const subTotal = () => {
+    let total = 0
+    if(form.value.invoice_items) {
+        form.value.invoice_items.map((data)=>{
+        total = total +(data.quantity * data.unit_price)
+    })
+    }
+  
+    return total
+}
+
+const Total = () => {
+    if( form.value.invoice_items){
+        return subTotal() - form.value.discount
+    }
+   
+}
+
+const onEdit = (id) => {
+    if(form.value.invoice_items.length>=1){
+        //alert(JSON.stringify(form.value.invoice_items))
+        let subtotal = 0
+         subtotal = subTotal();
+        let total = 0
+         total = Total();
+
+        const formData = new FormData();
+        formData.append('invoice_item', JSON.stringify(form.value.invoice_items));
+        formData.append('customer_id', form.value.customer_id);
+        formData.append('date', form.value.date);
+        formData.append('due_date', form.value.due_date);
+        formData.append('number', form.value.number);
+        formData.append('reference', form.value.reference);
+        formData.append('discount', form.value.discount);
+        formData.append('subtotal', subtotal);
+        formData.append('total', total);
+        formData.append('terms_and_conditions', form.value.terms_and_conditions);
+
+        axios.post(`/api/update_invoice/${form.value.id}`, formData)
+    .then(response => {
+        form.value.invoice_items = [];
+        router.push('/');
+    })
+    .catch(error => {
+        console.error('Error updating invoice:', error);
+    });
+    }
+}
+
 onMounted(() => {
 
   getInvoice();
@@ -164,20 +213,20 @@ onMounted(() => {
             <div class="table__footer">
                 <div class="document-footer" >
                     <p>Terms and Conditions</p>
-                    <textarea cols="50" rows="7" class="textarea" ></textarea>
+                    <textarea cols="50" rows="7" class="textarea" v-model="form.terms_and_conoditions" ></textarea>
                 </div>
                 <div>
                     <div class="table__footer--subtotal">
                         <p>Sub Total</p>
-                        <span>$ 1000</span>
+                        <span>$ {{subTotal()}}</span>
                     </div>
                     <div class="table__footer--discount">
                         <p>Discount</p>
-                        <input type="text" class="input">
+                        <input type="text" class="input" v-model="form.discount">
                     </div>
                     <div class="table__footer--total">
                         <p>Grand Total</p>
-                        <span>$ 1200</span>
+                        <span>$ {{Total()}}</span>
                     </div>
                 </div>
             </div>
@@ -189,7 +238,7 @@ onMounted(() => {
                 
             </div>
             <div>
-                <a class="btn btn-secondary">
+                <a class="btn btn-secondary" @click="onEdit(form.id)">
                     Save
                 </a>
             </div>
@@ -218,7 +267,7 @@ onMounted(() => {
                 <button class="btn btn-light mr-2 btn__close--modal"  @click="closeModal">
                     Cancel
                 </button>
-                <button class="btn btn-light btn__close--modal ">Save</button>
+                <button class="btn btn-light btn__close--modal " >Save</button>
             </div>
         </div>
     </div>

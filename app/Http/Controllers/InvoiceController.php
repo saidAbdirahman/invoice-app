@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Invoice;
 use App\Models\Counter;
 use App\Models\InvoiceItem;
+use App\Models\Customer;
 
 class InvoiceController extends Controller
 {
@@ -107,8 +108,70 @@ class InvoiceController extends Controller
             'invoice' => $invoice
         ],200);
     }
+
     public function delete_invoice_items($id){
         $invoiceitem = InvoiceItem::findOrFail($id);
         $invoiceitem->delete();
     }
+
+    public function update_invoice(Request $request, $id) {
+        $invoice = Invoice::where('id', $id)->first();
+    
+        if (!$invoice) {
+            return response()->json(['error' => 'Invoice not found'], 404);
+        }
+    
+        $invoice->sub_total = $request->subtotal;
+        $invoice->total = $request->total;
+        $invoice->customer_id = $request->customer_id;
+        $invoice->number = $request->number;
+        $invoice->date = $request->date;
+        $invoice->due_date = $request->due_date;
+        $invoice->discount = $request->discount;
+        $invoice->reference = $request->reference;
+        $invoice->terms_and_conditions = $request->terms_and_conditions;
+    
+        $invoice->update($request->all());
+    
+        $invoiceitem = $request->input("invoice_item");
+    
+        $invoice->invoice_items()->delete();
+    
+        foreach (json_decode($invoiceitem) as $item) {
+            $itemdata['product_id'] = $item->product_id;
+            $itemdata['invoice_id'] = $invoice->id;
+            $itemdata['quantity'] = $item->quantity;
+            $itemdata['unit_price'] = $item->unit_price;
+    
+            InvoiceItem::create($itemdata);
+        }
+    
+        return response()->json(['success' => 'Invoice updated successfully']);
+    }
+
+
+
+
+    public function add_new_customer(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:customers,email',
+            'address' => 'nullable|string|max:255',
+        ]);
+
+        $customer = new Customer;
+        $customer->first_name = $request->first_name;
+        $customer->last_name = $request->last_name;
+        $customer->email = $request->email;
+        $customer->address = $request->address;
+        $customer->save(); // Save the model instance
+
+        return response()->json(['message' => 'Customer added successfully!'], 201);
+        return redirect('/');
+    }
+
+    
+   
 }

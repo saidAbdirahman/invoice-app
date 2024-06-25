@@ -1,7 +1,11 @@
 <script setup>
 import axios from "axios"
 import {  onMounted, ref } from 'vue';
-import router from "../../router/index.js";
+import { useRouter } from 'vue-router';
+import InvoiceTrendsChart from './InvoiceTrendsChart.vue'; // Adjust path as per your project structure
+
+
+const router = useRouter()
 
 
 
@@ -36,7 +40,7 @@ const addCart = (item) => {
         item_code: item.item_code,
         description: item.description,
         unit_price: item.unit_price,
-        quantity: item.quantity,
+        quantity:1,
     }
     listCart.value.push(itemcart)
     closeModal()
@@ -254,5 +258,7 @@ const onSave =  () => {
             </div>
         </div>
     </div>
+    <!-- <InvoiceTrendsChart :chart-data="chartData" :chart-options="chartOptions" /> -->
+
 </div>
 </template>
