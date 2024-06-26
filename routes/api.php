@@ -33,3 +33,4 @@ Route::get('/delete_invoice_items/{id}', [InvoiceController::class,'delete_invoi
 Route::post('/update_invoice/{id}', [InvoiceController::class,'update_invoice']);
 Route::get('/delete_invoice/{id}', [InvoiceController::class,'delete_invoice']);
 Route::post('/add_new_customer', [InvoiceController::class,'add_new_customer']);
+Route::get('/get_all_customer', [InvoiceController::class,'get_all_customer']);

@@ -1,48 +1,34 @@
-<script>
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
 
-export default {
-  data() {
-    return {
-      first_name: '',
-      last_name: '',
-      email: '',
-      address: '',
-    };
-  },
-  methods: {
-    onSave() {
-      const formData = new FormData();
-      formData.append('first_name', this.first_name);
-      formData.append('last_name', this.last_name);
-      formData.append('email', this.email);
-      formData.append('address', this.address);
+const first_name = ref('');
+const last_name = ref('');
+const email = ref('');
+const address = ref('');
 
-      axios.post('/api/add_new_customer', formData)
-        .then(response => {
-          alert(response.data.message);
-          this.first_name = '';
-          this.last_name = '';
-          this.email = '';
-          this.address = '';
-        })
-        .catch(error => {
-          console.error('There was an error!', error);
-          let errorMessage = 'There was an error submitting the form. Please try again.';
+const router = useRouter();
 
-          if (error.response) {
-            errorMessage = `Error: ${error.response.data.message || error.response.statusText}`;
-          } else if (error.request) {
-            errorMessage = 'No response received from the server.';
-          } else {
-            errorMessage = `Error: ${error.message}`;
-          }
+const onSave = async () => {
+  const formData = new FormData();
+  formData.append('first_name', first_name.value);
+  formData.append('last_name', last_name.value);
+  formData.append('email', email.value);
+  formData.append('address', address.value);
 
-          alert(errorMessage);
-        });
-    }
+  try {
+    const response = await axios.post('/api/add_new_customer', formData);
+    alert(response.data.message);
+    first_name.value = '';
+    last_name.value = '';
+    email.value = '';
+    address.value = '';
+    router.push('/invoices/get_all_customer.vue');
+  } catch (error) {
+    console.error(error);
   }
-}
+};
 </script>
   
 <template>

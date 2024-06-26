@@ -5,12 +5,19 @@ import invoiceEdit from '../components/invoices/edit.vue';
 import invoiceNew from '../components/invoices/new.vue';
 import notFound from '../components/NotFound.vue';
 import newCustomer from '../components/invoices/add_new_customer.vue';
+import getCustomers from '../components/invoices/get_all_customer.vue';
 
 const routes = [
   {
     path: '/',
     component: invoiceIndex
   },
+
+  {
+    path: '/invoices/get_all_customer.vue',
+    component: getCustomers
+  },
+
   {
     path:'/invoice/show/:id',
     component: invoiceShow,

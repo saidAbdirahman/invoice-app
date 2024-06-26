@@ -17,6 +17,11 @@ class InvoiceController extends Controller
         ],200);
     }
 
+    public function get_all_customer(){
+        $customers = Customer::orderBy('id', 'DESC')->get();
+        return response()->json($customers);
+    }
+
     public function search_invoice(Request $request){
         $search = $request->get('s');
         if($search != null){
@@ -109,7 +114,7 @@ class InvoiceController extends Controller
         ],200);
     }
 
-    public function delete_invoice_items($id){
+    public function delete_invoice($id){
         $invoiceitem = InvoiceItem::findOrFail($id);
         $invoiceitem->delete();
     }
