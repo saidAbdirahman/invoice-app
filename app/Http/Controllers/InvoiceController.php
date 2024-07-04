@@ -7,6 +7,7 @@ use App\Models\Invoice;
 use App\Models\Counter;
 use App\Models\InvoiceItem;
 use App\Models\Customer;
+use Illuminate\Support\Facades\Hash;
 
 class InvoiceController extends Controller
 {
@@ -170,6 +171,8 @@ class InvoiceController extends Controller
         $customer->first_name = $request->first_name;
         $customer->last_name = $request->last_name;
         $customer->email = $request->email;
+      
+        $customer->password = Hash::make($request->password);
         $customer->address = $request->address;
         $customer->save(); // Save the model instance
 

@@ -3,6 +3,32 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 
+const password = ref('');
+const passwordStrength = ref('');
+const strengthClass = ref('');
+
+
+const evaluatePasswordStrength = () => {
+  const length = password.value.length;
+  const hasNumbers = /\d/.test(password.value);
+  const hasLetters = /[a-zA-Z]/.test(password.value);
+  const hasSpecialChars = /[!@#$%^&*(),.?":{}|<>]/.test(password.value);
+
+  if (length === 0) {
+    passwordStrength.value = '';
+    strengthClass.value = '';
+  } else if (length < 8 || !hasNumbers || !hasLetters || !hasSpecialChars) {
+    passwordStrength.value = 'Weak';
+    strengthClass.value = 'weak';
+  } else if (length < 12) {
+    passwordStrength.value = 'Medium';
+    strengthClass.value = 'medium';
+  } else {
+    passwordStrength.value = 'Strong';
+    strengthClass.value = 'strong';
+  }
+};
+
 const first_name = ref('');
 const last_name = ref('');
 const email = ref('');
@@ -11,10 +37,12 @@ const address = ref('');
 const router = useRouter();
 
 const onSave = async () => {
+
   const formData = new FormData();
   formData.append('first_name', first_name.value);
   formData.append('last_name', last_name.value);
   formData.append('email', email.value);
+  formData.append('password', password.value);
   formData.append('address', address.value);
 
   try {
@@ -48,8 +76,14 @@ const onSave = async () => {
           <input id="email" type="email" v-model="email" class="input">
         </div>
         <div class="form-group">
-          <label for="email">Password</label>
-          <input id="password" type="passwrod" v-model="email" class="input">
+          <label>Password:</label>
+      <input class="input"
+        type="password"
+        v-model="password"
+        @input="evaluatePasswordStrength"
+        required
+      />
+      <p class="password-strength" :class="strengthClass">{{ passwordStrength }}</p>
         </div>
         <div class="form-group">
           <label for="address">Address</label>
