@@ -16,6 +16,12 @@ const showCustomer = async () => {
     customers.value = response.data;
 }
 
+const newCustomer = async () => {
+    // let form = await axios.get("/api/add_new_customer")
+    // console.log('form', form.data)
+    router.push('/invoices/add_new_customer')
+}
+
 onMounted(showCustomer)
 </script>
 
@@ -27,7 +33,8 @@ onMounted(showCustomer)
             <h2 class="invoices-title">Invoices</h2>
           </div>
           <div>
-            <a class="invoices-btn3" @click="goBack()">Go Back</a>
+            <a class="invoices-btn3" @click="goBack()" style="margin-right:5px;">Go Back</a>
+            <a class="invoices-btn3" @click="newCustomer">+ Add New</a>
           </div>
         </div>
   

@@ -435,6 +435,14 @@ ul {
     color:black
 }
 
+input{
+    margin: 10px auto;
+  }
+
+  button{
+    color:#5463c1;
+  }
+
 .logo {
     padding-top:40px;
     padding-left:25px;

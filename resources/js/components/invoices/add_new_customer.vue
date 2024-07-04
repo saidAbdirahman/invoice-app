@@ -24,7 +24,7 @@ const onSave = async () => {
     last_name.value = '';
     email.value = '';
     address.value = '';
-    router.push('/invoices/get_all_customer.vue');
+    router.push('/invoices/get_all_customer');
   } catch (error) {
     console.error(error);
   }
@@ -46,6 +46,10 @@ const onSave = async () => {
         <div class="form-group">
           <label for="email">Email</label>
           <input id="email" type="email" v-model="email" class="input">
+        </div>
+        <div class="form-group">
+          <label for="email">Password</label>
+          <input id="password" type="passwrod" v-model="email" class="input">
         </div>
         <div class="form-group">
           <label for="address">Address</label>
