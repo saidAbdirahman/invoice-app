@@ -39,12 +39,12 @@ const newInvoice = async () => {
 const newCustomer = async () => {
     // let form = await axios.get("/api/add_new_customer")
     // console.log('form', form.data)
-    router.push('/invoices/add_new_customer.vue')
+    router.push('/invoices/add_new_customer')
 }
 
 const showCustomer = async () => {
    
-    router.push('/invoices/get_all_customer.vue')
+    router.push('/invoices/get_all_customer')
     // console.log('response', response)
     // router.push('/invoices/add_new_customer')
 } 
@@ -121,7 +121,7 @@ const onShow = (id) => {
                 </div>
 
                 <!-- item 1 -->
-                <div class="table--items" v-for="item in invoices" :key="item.id" v-if="invoices.length > 0">
+                <div class="table--items" v-show="invoices.length > 0"   v-for="item in invoices" :key="item.id"   >
                     <a href="#" @click="onShow(item.id)">#{{item.id}}</a>
                     <p>{{item.date}}</p>
                     <p>{{item.number}}</p>
@@ -132,9 +132,7 @@ const onShow = (id) => {
                     <p>{{item.due_date}}</p>
                     <p> $ {{item.total}}</p>
                 </div>
-                <div class="table--items" v-else>
-                <p>Invoice Not Found</p>
-                </div>
+              
             </div>
             
         </div>

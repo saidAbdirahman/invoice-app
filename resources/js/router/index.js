@@ -14,7 +14,7 @@ const routes = [
   },
 
   {
-    path: '/invoices/get_all_customer.vue',
+    path: '/invoices/get_all_customer',
     component: getCustomers
   },
 
@@ -24,7 +24,7 @@ const routes = [
     props : true
   },
   {
-    path:'/invoices/add_new_customer.vue',
+    path:'/invoices/add_new_customer',
     component: newCustomer,
     
   },
